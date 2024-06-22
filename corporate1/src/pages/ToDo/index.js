@@ -130,40 +130,29 @@ const ToDoList = () => {
   console.log("todos in index", todos);
 
   useEffect(() => {
-    async function getTodoss() {
+    async function getTheProjects() {
       try {
-        let response;
-        if (JSON.parse(sessionStorage.getItem("authUser"))) {
-          const token = JSON.parse(sessionStorage.getItem("authUser")).result
-          .accessToken
-          ? JSON.parse(sessionStorage.getItem("authUser")).result.accessToken
-          : null;
-          if (token) {
-          }
-          response =  await axios.get("http://localhost:8001/api/v1/game_plan", {
+        const response = await axios.get(
+          "http://localhost:8001/api/v1/todoprojects",
+          {
             headers: {
-              Authorization: `Bearer ${token}`,
+              "Authorization":
+                "Bearer " +
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWVkMDg0ZDVhM2Y4NTQ5MDlkMDIzNSIsImlhdCI6MTcxOTA1NDcwNCwiZXhwIjoxNzE5MTQxMTA0fQ._KXaJtEbfr0lSOyBrbe7g78ktLuCuUV-kE4MnXsv7Zg",
             },
-          });
-          console.log("here yes", response);
-          
-          console.log("response data.result", response);
-          setTodo(response.result);
-          setTaskList(response.result);
-          dispatch(getTodo(response));
-        }
-      } catch (error) {
-        return error;
+          }
+        );
+        console.log("response.result projects", response.result);
+        return response.result;
+      } catch (exception) {
+        console.log("exception", exception);
       }
     }
 
-    getTodoss();
+    getTheProjects();
   }, []);
 
-  useEffect(() => {
-    setTodo(todos);
-    setTaskList(todos);
-  }, [todos]);
+
 
   const toggle = useCallback(() => {
     if (modalTodo) {
